@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a1628" id="themeColorMeta">
+<title>ASRA Anticoag Guidelines</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── DARK MODE (default) ── */
+  :root {
+    --navy: #0a1628;
+    --blue-bright: #2e8fdf;
+    --teal-light: #14b8a6;
+    --amber-light: #f59e0b;
+    --red-light: #ef4444;
+    --green-light: #10b981;
+    --text: #e8edf5;
+    --text-muted: #8fa3c0;
+    --surface: #132240;
+    --border: rgba(255,255,255,0.08);
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --bg: #0a1628;
+    --bg-gradient-1: rgba(30,111,186,0.12);
+    --bg-gradient-2: rgba(13,148,136,0.08);
+    --input-bg: rgba(255,255,255,0.05);
+    --input-border: rgba(255,255,255,0.1);
+    --pill-bg: rgba(255,255,255,0.04);
+    --pill-border: rgba(255,255,255,0.1);
+    --subtype-bg: rgba(255,255,255,0.04);
+    --subtype-border: rgba(255,255,255,0.1);
+    --grade-row-bg: rgba(255,255,255,0.02);
+    --h1-color: #ffffff;
+    --rec-stop-bg: rgba(220,38,38,0.15);
+    --rec-removal-bg: rgba(217,119,6,0.15);
+    --rec-restart-bg: rgba(5,150,105,0.15);
+    --rec-lab-bg: rgba(30,111,186,0.15);
+    --rec-notes-bg: rgba(100,100,120,0.15);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  /* ── LIGHT MODE ── */
+  body.light {
+    --navy: #f0f4f8;
+    --blue-bright: #1a6db5;
+    --teal-light: #0d7d72;
+    --amber-light: #b45309;
+    --red-light: #c41c1c;
+    --green-light: #047857;
+    --text: #0f1f36;
+    --text-muted: #4a6580;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.09);
+    --shadow: 0 4px 20px rgba(0,0,0,0.1);
+    --bg: #eef2f7;
+    --bg-gradient-1: rgba(30,111,186,0.06);
+    --bg-gradient-2: rgba(13,148,136,0.05);
+    --input-bg: rgba(0,0,0,0.03);
+    --input-border: rgba(0,0,0,0.12);
+    --pill-bg: rgba(0,0,0,0.03);
+    --pill-border: rgba(0,0,0,0.1);
+    --subtype-bg: rgba(0,0,0,0.03);
+    --subtype-border: rgba(0,0,0,0.1);
+    --grade-row-bg: rgba(0,0,0,0.02);
+    --h1-color: #0a1628;
+    --rec-stop-bg: rgba(220,38,38,0.08);
+    --rec-removal-bg: rgba(217,119,6,0.08);
+    --rec-restart-bg: rgba(5,150,105,0.08);
+    --rec-lab-bg: rgba(30,111,186,0.08);
+    --rec-notes-bg: rgba(80,80,100,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── Background texture ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, var(--bg-gradient-1) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, var(--bg-gradient-2) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Theme Toggle Button ── */
+  .theme-toggle {
+    position: fixed;
+    top: 14px;
+    right: 16px;
+    z-index: 100;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .theme-toggle:active { transform: scale(0.9); }
+  .theme-toggle svg { transition: opacity 0.2s, transform 0.3s; }
+  .icon-moon { position: absolute; }
+  .icon-sun  { position: absolute; opacity: 0; transform: rotate(90deg) scale(0.7); }
+  body.light .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.7); }
+  body.light .icon-sun  { opacity: 1; transform: rotate(0deg) scale(1); }
+
+  .container { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; padding: 0 16px 100px; }
+
+  /* ── Header ── */
+  header {
+    padding: 52px 0 24px;
+    text-align: center;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(30,111,186,0.15);
+    border: 1px solid rgba(46,143,223,0.3);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+    margin-bottom: 16px;
+  }
+  .header-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-light); display: block; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(26px, 7vw, 34px);
+    line-height: 1.15;
+    color: var(--h1-color);
+    margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+  h1 em { font-style: italic; color: var(--teal-light); }
+  .subtitle { font-size: 13px; color: var(--text-muted); font-weight: 400; line-height: 1.5; }
+
+  /* ── Search Card ── */
+  .search-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 24px 0 8px;
+    box-shadow: var(--shadow);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .search-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; display: block; }
+  .search-row { display: flex; gap: 10px; align-items: stretch; }
+  .search-input-wrap { flex: 1; position: relative; }
+  .search-input-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+  #searchInput {
+    width: 100%;
+    padding: 14px 14px 14px 42px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    -webkit-appearance: none;
+  }
+  #searchInput::placeholder { color: var(--text-muted); }
+  #searchInput:focus { border-color: var(--blue-bright); background: rgba(46,143,223,0.06); }
+
+  /* ── Quick Select Pills ── */
+  .quick-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin: 20px 0 10px; }
+  .pills-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; }
+  .pills-scroll::-webkit-scrollbar { display: none; }
+  .pill {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 100px;
+    border: 1.5px solid var(--pill-border);
+    background: var(--pill-bg);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .pill:active { transform: scale(0.95); }
+  .pill.active, .pill:hover { background: rgba(46,143,223,0.15); border-color: var(--blue-bright); color: var(--text); }
+
+  /* ── Results ── */
+  #results { margin-top: 20px; }
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state svg { opacity: 0.3; margin-bottom: 16px; }
+  .empty-state p { font-size: 14px; line-height: 1.6; }
+
+  /* ── Drug Result Card ── */
+  .drug-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    animation: slideUp 0.25s ease forwards;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  @keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  .drug-card-header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .drug-name { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--h1-color); line-height: 1.2; transition: color 0.3s; }
+  .drug-class { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-top: 3px; letter-spacing: 0.04em; }
+  .drug-subtype-tag {
+    flex-shrink: 0;
+    background: rgba(46,143,223,0.12);
+    border: 1px solid rgba(46,143,223,0.25);
+    color: var(--blue-bright);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    text-align: center;
+    max-width: 120px;
+    line-height: 1.3;
+  }
+
+  /* Subtype selector */
+  .subtype-selector { padding: 14px 20px; border-bottom: 1px solid var(--border); display: none; }
+  .subtype-selector.visible { display: block; }
+  .subtype-selector-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 10px; }
+  .subtype-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+  .subtype-btn {
+    padding: 7px 13px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--subtype-border);
+    background: var(--subtype-bg);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .subtype-btn.active { background: rgba(13,148,136,0.15); border-color: var(--teal-light); color: var(--teal-light); }
+  .subtype-btn:active { transform: scale(0.96); }
+
+  /* Rec rows */
+  .rec-grid { padding: 6px 0; }
+  .rec-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .rec-row:last-child { border-bottom: none; }
+  .rec-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-top: 1px;
+  }
+  .rec-content { flex: 1; min-width: 0; }
+  .rec-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .rec-value { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.45; }
+  .rec-value.danger { color: var(--red-light); font-weight: 600; }
+  .rec-value.warning { color: var(--amber-light); }
+  .rec-value.safe { color: var(--green-light); }
+  .rec-value.info { color: var(--blue-bright); }
+
+  .rec-row.stop .rec-icon { background: var(--rec-stop-bg); }
+  .rec-row.removal .rec-icon { background: var(--rec-removal-bg); }
+  .rec-row.restart .rec-icon { background: var(--rec-restart-bg); }
+  .rec-row.lab .rec-icon { background: var(--rec-lab-bg); }
+  .rec-row.notes .rec-icon { background: var(--rec-notes-bg); }
+
+  /* Grade badge */
+  .grade-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--grade-row-bg);
+    border-top: 1px solid var(--border);
+  }
+  .grade-label { font-size: 11px; color: var(--text-muted); }
+  .grade-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+  .grade-1A, .grade-1B, .grade-1C { background: rgba(5,150,105,0.15); color: var(--green-light); border: 1px solid rgba(16,185,129,0.3); }
+  .grade-2A, .grade-2B, .grade-2C { background: rgba(202,138,4,0.15); color: #d97706; border: 1px solid rgba(217,119,6,0.3); }
+
+  /* Alert banner */
+  .alert-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 16px 0;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .alert-banner.warn { background: rgba(217,119,6,0.1); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
+  .alert-banner.danger { background: rgba(220,38,38,0.1); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
+
+  /* Disclaimer */
+  .disclaimer {
+    margin-top: 28px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* ── No match ── */
+  .no-match {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+  @media (prefers-color-scheme: light) { /* intentionally keeping dark — medical app readability */ }
+</style>
+</head>
+<body>
+<!-- Theme Toggle -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+  <svg class="icon-moon" width="20" height="20" fill="none" stroke="#e8edf5" stroke-width="2" viewBox="0 0 24 24">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+  <svg class="icon-sun" width="20" height="20" fill="none" stroke="#0a1628" stroke-width="2" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+</button>
+
+<div class="container">
+
+  <header>
+    <div class="header-badge"><span></span>ASRA 5th Edition · 2022</div>
+    <h1>Regional Anesthesia &<br><em>Anticoagulation</em></h1>
+    <p class="subtitle">Evidence-based hold times & catheter recommendations<br>for anticoagulated patients</p>
+  </header>
+
+  <div class="search-card">
+    <span class="search-label">Find your medication</span>
+    <div class="search-row">
+      <div class="search-input-wrap">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="searchInput" type="text" placeholder="e.g. apixaban, heparin, clopidogrel…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+    </div>
+
+    <div class="quick-label">Quick select</div>
+    <div class="pills-scroll" id="pillsContainer"></div>
+  </div>
+
+  <div id="results">
+    <div class="empty-state">
+      <svg width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="display:block;margin:0 auto 16px">
+        <path d="M9 12h.01M12 12h.01M15 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+      </svg>
+      <p>Search for a medication above or tap<br>a quick-select pill to see ASRA<br>hold time recommendations.</p>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ These guidelines do not define standard of care and are not a substitute for clinical judgment. Always consult current ASRA publications and consider patient-specific factors including renal function, age, and concomitant medications.
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA – keyed by drug entry, subtypes optional
+// ═══════════════════════════════════════════════════════
+const DRUGS = [
+  {
+    id: "aspirin",
+    names: ["aspirin","asa","acetylsalicylic acid","nsaid","nsaids","ibuprofen","naproxen","ketorolac","cox inhibitor"],
+    display: "Aspirin / NSAIDs",
+    drugClass: "Antiplatelet – COX Inhibitor",
+    subtypes: null,
+    data: {
+      stop: { text: "No hold required", cls: "safe" },
+      removal: { text: "No specific timing required", cls: "" },
+      restart: { text: "No restriction — can continue through perioperative period", cls: "safe" },
+      lab: { text: "None routinely required", cls: "" },
+      notes: { text: "NSAIDs alone represent no significant added risk for spinal hematoma. Caution if combined with other anticoagulants (heparin, LMWH, warfarin) in the early postoperative period — avoid concomitant use with indwelling neuraxial catheters." },
+      grade: "1A"
+    }
+  },
+  {
+    id: "clopidogrel",
+    names: ["clopidogrel","plavix","thienopyridine"],
+    display: "Clopidogrel",
+    drugClass: "Antiplatelet – P2Y12 Thienopyridine",
+    subtypes: null,
+    data: {
+      stop: { text: "≥ 5–7 days before neuraxial block or deep plexus/peripheral block", cls: "warning" },
+      removal: { text: "Catheter may be maintained 1–2 days IF no loading dose was given. Do NOT maintain catheter if loading dose administered.", cls: "warning" },
+      restart: { text: "When clinically appropriate after block/removal", cls: "" },
+      lab: { text: "None routinely required (platelet function assays e.g. VerifyNow optional)", cls: "" },
+      notes: { text: "Irreversible P2Y12 inhibitor. No loading dose + maintenance dose: catheter acceptable 1–2 days. Loading dose: remove catheter before restarting. If patient is also on aspirin or anticoagulants, risk is substantially increased." },
+      grade: "1C"
+    }
+  },
+  {
+    id: "prasugrel",
+    names: ["prasugrel","effient"],
+    display: "Prasugrel",
+    drugClass: "Antiplatelet – P2Y12 Thienopyridine",
+    subtypes: null,
+    data: {
+      stop: { text: "≥ 7–10 days before neuraxial block or deep plexus/peripheral block", cls: "warning" },
+      removal: { text: "Do NOT maintain neuraxial catheter — rapid onset of action precludes safe catheter management", cls: "danger" },
+      restart: { text: "When clinically appropriate", cls: "" },
+      lab: { text: "None routinely required", cls: "" },
+      notes: { text: "Rapid onset with irreversible platelet inhibition. More potent than clopidogrel. Neuraxial catheters should NOT be maintained with prasugrel therapy. Higher risk of bleeding events than clopidogrel." },
+      grade: "1C"
+    }
+  },
+  {
+    id: "ticagrelor",
+    names: ["ticagrelor","brilinta","brilique"],
+    display: "Ticagrelor",
+    drugClass: "Antiplatelet – P2Y12 Non-thienopyridine",
+    subtypes: null,
+    data: {
+      stop: { text: "≥ 5–7 days before neuraxial block or deep plexus/peripheral block", cls: "warning" },
+      removal: { text: "Do NOT maintain neuraxial catheter — rapid reversible inhibition but unpredictable", cls: "danger" },
+      restart: { text: "When clinically appropriate", cls: "" },
+      lab: { text: "None routinely required", cls: "" },
+      notes: { text: "Reversible P2Y12 inhibitor with rapid onset. Despite reversibility, ASRA advises against maintaining neuraxial catheters. Twice-daily dosing means faster accumulation. Concurrent ASA is common — increases bleeding risk." },
+      grade: "1C"
+    }
+  },
+  {
+    id: "ticlopidine",
+    names: ["ticlopidine","ticlid"],
+    display: "Ticlopidine",
+    drugClass: "Antiplatelet – P2Y12 Thienopyridine",
+    subtypes: null,
+    data: {
+      stop: { text: "≥ 10 days before neuraxial block or deep plexus/peripheral block", cls: "warning" },
+      removal: { text: "Catheter may be maintained 1–2 days if NO loading dose given", cls: "warning" },
+      restart: { text: "When clinically appropriate", cls: "" },
+      lab: { text: "None routinely required", cls: "" },
+      notes: { text: "Longest washout period of thienopyridines due to delayed onset of action. Largely replaced by clopidogrel but still prescribed. Loading dose: do NOT maintain catheter. No loading dose: cautious catheter maintenance 1–2 days acceptable." },
+      grade: "1C"
+    }
+  },
+  {
+    id: "cangrelor",
+    names: ["cangrelor","kengreal"],
+    display: "Cangrelor",
+    drugClass: "Antiplatelet – P2Y12 IV Agent",
+    subtypes: null,
+    data: {
+      stop: { text: "≥ 3 hours after stopping infusion before neuraxial block", cls: "warning" },
+      removal: { text: "Limited data — use extreme caution with neuraxial catheters", cls: "warning" },
+      restart: { text: "When clinically appropriate", cls: "" },
+      lab: { text: "None routinely required", cls: "" },
+      notes: { text: "Very short half-life IV P2Y12 inhibitor (3–6 minutes active metabolite, platelet function recovers within ~60 min of stopping infusion). Limited neuraxial safety data. Only 3 hours hold required due to IV kinetics." },
+      grade: "2C"
+    }
+  },
+  {
+    id: "gp2b3a",
+    names: ["abciximab","eptifibatide","tirofiban","integrilin","aggrastat","reopro","gp iib iiia","glycoprotein iib","platelet gp"],
+    display: "GP IIb/IIIa Inhibitors",
+    drugClass: "Antiplatelet – GP IIb/IIIa Inhibitor",
+    subtypes: null,
+    data: {
+      stop: { text: "Abciximab: ≥ 24–48 hours | Eptifibatide / Tirofiban: ≥ 4–8 hours after stopping infusion", cls: "danger" },
+      removal: { text: "Only after platelet aggregation has normalized (confirm via platelet function assay)", cls: "danger" },
+      restart: { text: "After platelet function recovery", cls: "" },
+      lab: { text: "Platelet function assay (e.g. VerifyNow) to confirm recovery before proceeding", cls: "" },
+      notes: { text: "Profound platelet aggregation inhibition. Avoid neuraxial techniques until platelet function normalizes. Abciximab has longer duration (24–48 h) vs. eptifibatide/tirofiban (4–8 h) due to different binding kinetics." },
+      grade: "2C"
+    }
+  },
+  {
+    id: "ufh",
+    names: ["heparin","unfractionated heparin","ufh","iv heparin","subcutaneous heparin","sc heparin","sq heparin"],
+    display: "Unfractionated Heparin (UFH)",
+    drugClass: "Anticoagulant – UFH",
+    subtypes: [
+      { label: "IV Therapeutic", id: "ufh_iv" },
+      { label: "SC Low Dose (5,000 U BID/TID)", id: "ufh_sc_low" },
+      { label: "SC Intermediate (7,500–10,000 U)", id: "ufh_sc_int" },
+      { label: "SC High Dose (>10,000 U/dose)", id: "ufh_sc_high" },
+    ],
+    subtypeData: {
+      ufh_iv: {
+        stop: { text: "Stop infusion ≥ 4–6 hours AND confirm normal coagulation status (aPTT) before needle placement", cls: "warning" },
+        removal: { text: "Remove catheter only when coagulation status is confirmed normal. Do NOT maintain neuraxial or deep plexus catheter during continuous full-dose IV heparin.", cls: "danger" },
+        restart: { text: "Heparin may restart immediately after catheter removal (timing updated in 2018 erratum)", cls: "" },
+        lab: { text: "aPTT to confirm normal coags before block/removal. Platelet count if UFH > 4 days (HIT risk).", cls: "" },
+        notes: { text: "If unanticipated heparinization with catheter in situ: post-op neuro monitoring and consider dilute local anesthetic to aid early hematoma detection. Continuous IV heparin with indwelling neuraxial catheter is NOT recommended." },
+        grade: "1A"
+      },
+      ufh_sc_low: {
+        stop: { text: "≥ 4–6 hours after last SC dose AND confirm normal coagulation status", cls: "warning" },
+        removal: { text: "Remove catheter 4–6 hours after last SC heparin dose. No contraindication to maintaining catheter with low-dose SC UFH; removal 4–6 h after dose.", cls: "warning" },
+        restart: { text: "Immediately after neuraxial block or catheter removal", cls: "safe" },
+        lab: { text: "Platelet count if heparin > 4 days (HIT risk)", cls: "" },
+        notes: { text: "5,000 U BID or TID prophylaxis. Check platelets if >4 days on heparin. Risk increases if combined with antiplatelet agents — avoid co-administration." },
+        grade: "2C"
+      },
+      ufh_sc_int: {
+        stop: { text: "≥ 12 hours after last SC dose AND confirm normal coagulation status", cls: "warning" },
+        removal: { text: "≥ 12 hours after last SC dose + normal coagulation confirmed", cls: "warning" },
+        restart: { text: "Immediately after catheter removal", cls: "" },
+        lab: { text: "aPTT, platelet count if > 4 days", cls: "" },
+        notes: { text: "7,500–10,000 U BID or daily dose ≤20,000 U. Higher risk than low-dose. Avoid concurrent antiplatelet or anticoagulant agents." },
+        grade: "2C"
+      },
+      ufh_sc_high: {
+        stop: { text: "≥ 24 hours after last dose AND confirm normal coagulation status. Treat as therapeutic dose.", cls: "danger" },
+        removal: { text: "After complete anticoagulant clearance and normal coagulation confirmed. Avoid maintaining catheter.", cls: "danger" },
+        restart: { text: "Per clinical judgment and team discussion", cls: "" },
+        lab: { text: "aPTT, platelet count; consider anti-Xa depending on indication", cls: "" },
+        notes: { text: ">10,000 U/dose or >20,000 U total daily. Very high risk — treat identically to therapeutic IV heparin. Neuraxial catheter maintenance is NOT recommended." },
+        grade: "2C"
+      }
+    }
+  },
+  {
+    id: "lmwh",
+    names: ["lmwh","enoxaparin","lovenox","dalteparin","fragmin","tinzaparin","nadroparin","low molecular weight heparin","low-molecular-weight heparin"],
+    display: "LMWH",
+    drugClass: "Anticoagulant – Low Molecular Weight Heparin",
+    subtypes: [
+      { label: "Prophylactic Dose", id: "lmwh_prophylactic" },
+      { label: "Therapeutic / High Dose", id: "lmwh_therapeutic" },
+    ],
+    subtypeData: {
+      lmwh_prophylactic: {
+        stop: { text: "≥ 12 hours before needle placement or catheter removal", cls: "warning" },
+        removal: { text: "Remove catheter BEFORE initiating LMWH therapy. If BID dosing: first dose ≥ 24 h after placement, subsequent doses ≥ 4 h after catheter removal.", cls: "warning" },
+        restart: { text: "≥ 4 hours after catheter removal. First postop dose the next day for BID regimens.", cls: "safe" },
+        lab: { text: "Anti-Xa level NOT routinely recommended. Platelet count if LMWH > 4 days (HIT risk).", cls: "" },
+        notes: { text: "e.g., Enoxaparin 40 mg QD or 30 mg BID. BID dosing = higher hematoma risk than QD — first postop dose next day, subsequent doses ≥4 h after catheter removal. NEVER co-administer antiplatelet drugs or UFH with indwelling neuraxial catheter." },
+        grade: "1A"
+      },
+      lmwh_therapeutic: {
+        stop: { text: "≥ 24 hours before needle placement or catheter removal", cls: "danger" },
+        removal: { text: "Remove catheter BEFORE initiating LMWH. Catheter must be out before first dose.", cls: "danger" },
+        restart: { text: "≥ 4 hours after catheter removal", cls: "" },
+        lab: { text: "Anti-Xa NOT routinely recommended. Platelet count if > 4 days.", cls: "" },
+        notes: { text: "e.g., Enoxaparin 1 mg/kg BID or 1.5 mg/kg QD. If bloody or difficult needle/catheter placement: delay LMWH initiation 24 h postoperatively and discuss with surgeon. Do NOT use concomitant anticoagulants or antiplatelets with catheter in situ." },
+        grade: "1A"
+      }
+    }
+  },
+  {
+    id: "warfarin",
+    names: ["warfarin","coumadin","jantoven","vka","vitamin k antagonist","acenocoumarol","phenprocoumon"],
+    display: "Warfarin",
+    drugClass: "Anticoagulant – Vitamin K Antagonist",
+    subtypes: null,
+    data: {
+      stop: { text: "Stop ≥ 5 days before planned procedure. Confirm INR is normalized (per local lab reference range) before needle placement.", cls: "warning" },
+      removal: { text: "Remove neuraxial catheter when INR < 1.5. Monitor daily INR with catheter in situ. If INR 1.5–3.0: increased risk — catheter maintenance acceptable only with caution and neuro monitoring.", cls: "warning" },
+      restart: { text: "Per clinical team after catheter removal. Consider patient's thromboembolic risk.", cls: "" },
+      lab: { text: "INR before block placement. Daily INR monitoring while catheter is in situ. Check INR if first warfarin dose was > 24 h prior or a second dose has been given.", cls: "" },
+      notes: { text: "If first dose given > 24 h earlier or second dose administered: check INR before needle placement. INR > 3.0 with catheter in situ: notify provider, assess risk-benefit, consider bridging options. Monitor sensory and motor function every 6–8 h." },
+      grade: "1B"
+    }
+  },
+  {
+    id: "rivaroxaban",
+    names: ["rivaroxaban","xarelto","factor xa inhibitor"],
+    display: "Rivaroxaban",
+    drugClass: "DOAC – Direct Factor Xa Inhibitor",
+    subtypes: [
+      { label: "Low Dose (≤10 mg/day)", id: "riva_low" },
+      { label: "High Dose (15–20 mg/day)", id: "riva_high" },
+    ],
+    subtypeData: {
+      riva_low: {
+        stop: { text: "≥ 24 hours before neuraxial block or deep plexus/peripheral block.\n⚠️ CrCl < 30 mL/min: extend to ≥ 30 hours.", cls: "warning" },
+        removal: { text: "Remove catheter ≥ 6 hours before first postoperative dose. If unanticipated administration with catheter in situ: hold ≥ 24 h or check residual level before removal.", cls: "warning" },
+        restart: { text: "≥ 6 hours after catheter removal", cls: "safe" },
+        lab: { text: "If < 24 h since last dose: check anti-Xa (rivaroxaban-calibrated). Acceptable residual: < 30 ng/mL OR anti-Xa activity ≤ 0.1 IU/mL.", cls: "" },
+        notes: { text: "Low-dose: VTE prophylaxis (e.g., 10 mg QD post-ortho surgery). Renal adjustment required if CrCl < 30 mL/min. Do NOT proceed based on heparin-calibrated anti-Xa — must be rivaroxaban-specific calibration. Reversal: andexanet alfa (not recommended routinely for neuraxial per 2025 update)." },
+        grade: "2C"
+      },
+      riva_high: {
+        stop: { text: "≥ 72 hours before neuraxial block or deep plexus/peripheral block", cls: "danger" },
+        removal: { text: "Remove catheter ≥ 24 hours before first postoperative dose. Unanticipated high-dose + catheter: hold ≥ 72 h or confirm acceptable residual level.", cls: "danger" },
+        restart: { text: "≥ 6–24 hours after catheter removal (per clinical protocol)", cls: "" },
+        lab: { text: "Residual rivaroxaban level < 30 ng/mL or anti-Xa (rivaroxaban-calibrated) ≤ 0.1 IU/mL acceptable prior to block", cls: "" },
+        notes: { text: "High-dose: AF stroke prevention or DVT/PE treatment (15–20 mg QD/BID). 72-hour hold is mandatory for high-dose. With impaired renal function, residual levels may be elevated — laboratory confirmation recommended if uncertain." },
+        grade: "2C"
+      }
+    }
+  },
+  {
+    id: "apixaban",
+    names: ["apixaban","eliquis"],
+    display: "Apixaban",
+    drugClass: "DOAC – Direct Factor Xa Inhibitor",
+    subtypes: [
+      { label: "Low Dose (2.5 mg BID)", id: "apixa_low" },
+      { label: "High Dose (5–10 mg BID)", id: "apixa_high" },
+    ],
+    subtypeData: {
+      apixa_low: {
+        stop: { text: "≥ 26–30 hours before neuraxial block or deep plexus/peripheral block", cls: "warning" },
+        removal: { text: "Remove catheter ≥ 6 hours before first postoperative dose. Unanticipated dose with catheter: hold 26–30 h or check residual level.", cls: "warning" },
+        restart: { text: "≥ 6 hours after catheter removal", cls: "safe" },
+        lab: { text: "Anti-Xa (apixaban-calibrated) < 30 ng/mL or anti-Xa activity ≤ 0.1 IU/mL if < 26 h from last dose", cls: "" },
+        notes: { text: "Low-dose: VTE prophylaxis (2.5 mg BID, e.g. post-TKA/THA). Note: 2.5 mg BID in patients with ≥2 of: age ≥80, weight ≤60 kg, Cr ≥1.5 mg/dL is therapeutic (AF) — confirm dose intent. Reversal: andexanet alfa (not recommended routinely for neuraxial per 2025 update)." },
+        grade: "2C"
+      },
+      apixa_high: {
+        stop: { text: "≥ 72 hours before neuraxial block or deep plexus/peripheral block", cls: "danger" },
+        removal: { text: "Remove catheter ≥ 6 hours (per 5th Ed) to ≥ 24 hours before first postoperative dose. Unanticipated high-dose + catheter: hold ≥ 72 h or confirm acceptable residual level.", cls: "danger" },
+        restart: { text: "≥ 6 hours after catheter removal (clinical discretion for delay)", cls: "" },
+        lab: { text: "Residual apixaban level < 30 ng/mL or anti-Xa (apixaban-calibrated) ≤ 0.1 IU/mL", cls: "" },
+        notes: { text: "High-dose: AF stroke prevention or DVT/PE treatment (5 mg BID or 10 mg BID loading). Renal/hepatic impairment may prolong effect. Do NOT use heparin-calibrated anti-Xa assay — results will be unreliable." },
+        grade: "2C"
+      }
+    }
+  },
+  {
+    id: "edoxaban",
+    names: ["edoxaban","savaysa","lixiana"],
+    display: "Edoxaban",
+    drugClass: "DOAC – Direct Factor Xa Inhibitor",
+    subtypes: [
+      { label: "Low Dose (15–30 mg/day)", id: "edox_low" },
+      { label: "High Dose (60 mg/day)", id: "edox_high" },
+    ],
+    subtypeData: {
+      edox_low: {
+        stop: { text: "≥ 24 hours before neuraxial block. ⚠️ CrCl < 30 mL/min: extend to ≥ 30 hours.", cls: "warning" },
+        removal: { text: "Remove catheter ≥ 6 hours before first postoperative dose. Unanticipated dose + catheter: hold ≥ 24 h or check residual level.", cls: "warning" },
+        restart: { text: "≥ 6 hours after catheter removal", cls: "safe" },
+        lab: { text: "Anti-Xa (edoxaban-calibrated) < 30 ng/mL or anti-Xa activity ≤ 0.1 IU/mL if < 24 h from last dose", cls: "" },
+        notes: { text: "Low dose VTE prophylaxis. Renal dose adjustment: CrCl < 30 mL/min requires longer hold. Edoxaban actually has paradoxically reduced efficacy at CrCl > 95 mL/min — confirm appropriate dosing context." },
+        grade: "2C"
+      },
+      edox_high: {
+        stop: { text: "≥ 72 hours before neuraxial block or deep plexus/peripheral block", cls: "danger" },
+        removal: { text: "Remove catheter ≥ 24 hours before first postoperative dose. Unanticipated high-dose + catheter: hold ≥ 72 h or confirm acceptable residual level.", cls: "danger" },
+        restart: { text: "≥ 6 hours after catheter removal", cls: "" },
+        lab: { text: "Residual edoxaban < 30 ng/mL or anti-Xa (edoxaban-calibrated) ≤ 0.1 IU/mL", cls: "" },
+        notes: { text: "High-dose: AF stroke prevention or DVT/PE treatment (60 mg QD; 30 mg if CrCl 15–50 or low body weight). Reversal: andexanet alfa available but not routinely recommended for neuraxial procedures (2025 ASRA guidance)." },
+        grade: "2C"
+      }
+    }
+  },
+  {
+    id: "dabigatran",
+    names: ["dabigatran","pradaxa","direct thrombin inhibitor","dti oral"],
+    display: "Dabigatran",
+    drugClass: "DOAC – Direct Thrombin Inhibitor",
+    subtypes: [
+      { label: "CrCl ≥ 80 mL/min", id: "dabi_80" },
+      { label: "CrCl 50–79 mL/min", id: "dabi_50" },
+      { label: "CrCl 30–49 mL/min", id: "dabi_30" },
+      { label: "CrCl < 30 mL/min", id: "dabi_ckd" },
+    ],
+    subtypeData: {
+      dabi_80: {
+        stop: { text: "≥ 72 hours before neuraxial block or deep plexus/peripheral block", cls: "warning" },
+        removal: { text: "Do NOT administer dabigatran with neuraxial catheter in situ. Remove catheter ≥ 6 hours before first postoperative dose.", cls: "danger" },
+        restart: { text: "≥ 6 hours after catheter removal", cls: "" },
+        lab: { text: "If < 72 h from last dose: check dTT (dilute thrombin time) or ECT (ecarin clotting time). Acceptable residual: dabigatran level < 30 ng/mL.", cls: "" },
+        notes: { text: "> 80% renally excreted — renal function drives all dose decisions. Unanticipated dose with catheter in situ: hold 34–36 h or assess dTT/ECT before removal. Reversal: idarucizumab (Praxbind) reverses dabigatran within minutes." },
+        grade: "2C"
+      },
+      dabi_50: {
+        stop: { text: "≥ 96 hours before neuraxial block or deep plexus/peripheral block", cls: "warning" },
+        removal: { text: "Do NOT administer dabigatran with catheter in situ. Remove catheter ≥ 6 hours before first postop dose.", cls: "danger" },
+        restart: { text: "≥ 6 hours after catheter removal", cls: "" },
+        lab: { text: "If < 96 h: check dTT or ECT. Dabigatran level < 30 ng/mL acceptable.", cls: "" },
+        notes: { text: "Moderate renal impairment significantly prolongs dabigatran half-life. Estimated CrCl tends to overestimate actual function — be conservative. Perioperative renal function may further deteriorate." },
+        grade: "2C"
+      },
+      dabi_30: {
+        stop: { text: "≥ 120 hours (5 days) before neuraxial block or deep plexus/peripheral block", cls: "danger" },
+        removal: { text: "Do NOT administer with catheter in situ. Remove catheter ≥ 6 hours before first postoperative dose.", cls: "danger" },
+        restart: { text: "≥ 6 hours after catheter removal; individualize based on renal status", cls: "" },
+        lab: { text: "dTT or ECT strongly recommended if < 120 h from last dose. Dabigatran level < 30 ng/mL.", cls: "" },
+        notes: { text: "Severe impairment markedly prolongs elimination. Consider consulting nephrology and hematology. Unanticipated dose + catheter: hold 34–36 h + dTT/ECT assessment." },
+        grade: "2C"
+      },
+      dabi_ckd: {
+        stop: { text: "⛔ CONTRAINDICATED — Avoid neuraxial techniques in patients with CrCl < 30 mL/min on dabigatran", cls: "danger" },
+        removal: { text: "N/A — neuraxial techniques should not be performed", cls: "" },
+        restart: { text: "Discuss alternative anticoagulation with clinical team", cls: "" },
+        lab: { text: "N/A", cls: "" },
+        notes: { text: "Dabigatran is NOT FDA-approved for use in CrCl < 15 mL/min (varies by indication). With CrCl < 30 mL/min, unpredictable accumulation makes neuraxial block unsafe. Consider alternative anticoagulant class with less renal dependence (e.g., warfarin with INR monitoring)." },
+        grade: "2C"
+      }
+    }
+  },
+  {
+    id: "fondaparinux",
+    names: ["fondaparinux","arixtra","factor xa","synthetic pentasaccharide"],
+    display: "Fondaparinux",
+    drugClass: "Anticoagulant – Synthetic Factor Xa Inhibitor",
+    subtypes: null,
+    data: {
+      stop: { text: "≥ 36–42 hours before neuraxial block (single-injection techniques only — extreme caution for catheter techniques)", cls: "danger" },
+      removal: { text: "Catheter techniques: extreme caution — remove catheter BEFORE first fondaparinux dose. Allow ≥ 36–42 h from last dose before removal.", cls: "danger" },
+      restart: { text: "≥ 6–12 hours after procedure or catheter removal", cls: "" },
+      lab: { text: "Anti-Xa assay (fondaparinux-specific calibration) if level uncertain", cls: "" },
+      notes: { text: "Irreversible indirect Factor Xa inhibitor. NO specific reversal agent available (unlike direct Xa inhibitors). Primarily renally excreted — renal impairment significantly prolongs half-life (17–21 h base, longer in CKD). Single-injection spinal preferred over catheter techniques. Only prophylactic dose (2.5 mg/day) is addressed by ASRA — therapeutic doses require even greater caution." },
+      grade: "2C"
+    }
+  },
+  {
+    id: "argatroban",
+    names: ["argatroban","acova","bivalirudin","angiomax","parenteral dti","iv dti","direct thrombin iv","parenteral thrombin"],
+    display: "Parenteral DTIs (Argatroban / Bivalirudin)",
+    drugClass: "Anticoagulant – Parenteral Direct Thrombin Inhibitor",
+    subtypes: null,
+    data: {
+      stop: { text: "⛔ AVOID neuraxial techniques — ASRA recommends AGAINST neuraxial blocks in patients receiving parenteral thrombin inhibitors", cls: "danger" },
+      removal: { text: "No recommendation — neuraxial techniques should not be performed. If unavoidable, consult hematology and document risk-benefit discussion.", cls: "danger" },
+      restart: { text: "N/A — neuraxial not recommended", cls: "" },
+      lab: { text: "aPTT monitored for therapeutic dosing; effect present ≤ 3 h after IV administration", cls: "" },
+      notes: { text: "Argatroban and bivalirudin are used primarily in HIT patients or PCI. No reported cases of spinal hematoma — but also very limited neuraxial experience. Effect monitored by aPTT. No specific reversal agent. If neuraxial is critical, discuss with senior team and document thoroughly." },
+      grade: "2C"
+    }
+  },
+  {
+    id: "thrombolytics",
+    names: ["alteplase","tpa","tissue plasminogen activator","streptokinase","urokinase","reteplase","tenecteplase","thrombolytic","fibrinolytic","thrombolysis"],
+    display: "Thrombolytics / Fibrinolytics",
+    drugClass: "Fibrinolytic Agent",
+    subtypes: null,
+    data: {
+      stop: { text: "⛔ CONTRAINDICATED — Avoid spinal/epidural anesthesia in patients who have received fibrinolytic/thrombolytic therapy except in extreme circumstances", cls: "danger" },
+      removal: { text: "No definitive recommendation for catheter removal timing if unanticipated thrombolytic given. Neurological checks every 2 hours. Measure fibrinogen levels to guide timing.", cls: "danger" },
+      restart: { text: "No neuraxial techniques for ≥ 48 hours after thrombolytic therapy, and only after confirming fibrinogen and clotting factors have normalized", cls: "" },
+      lab: { text: "Fibrinogen level (last clotting factor to recover), aPTT, PT/INR. Fibrinogen is most reliable marker of thrombolytic effect resolution.", cls: "" },
+      notes: { text: "Fibrinolytics lyse all clots including hemostatic plugs. Spontaneous spinal hematoma risk is profound. If patient received thrombolytics within 10 days before a planned neuraxial procedure: review and monitor. Guidelines suggest avoidance for 10 days following puncture of non-compressible vessels. Concomitant heparin/antiplatelet agents further increase hemorrhagic risk." },
+      grade: "1A"
+    }
+  },
+  {
+    id: "herbal",
+    names: ["garlic","ginkgo","ginseng","vitamin e","fish oil","omega 3","herbal","supplement","nattokinase","dong quai"],
+    display: "Herbal Supplements",
+    drugClass: "Supplement – Antiplatelet / Anticoagulant Effect",
+    subtypes: null,
+    data: {
+      stop: { text: "No mandatory hold period specified by ASRA. Individualized assessment recommended.", cls: "safe" },
+      removal: { text: "No specific timing requirement", cls: "" },
+      restart: { text: "No restriction", cls: "" },
+      lab: { text: "None routinely required", cls: "" },
+      notes: { text: "Garlic, ginkgo, and ginseng affect platelet function or coagulation but have NOT been shown to independently increase spinal hematoma risk. However, these agents may potentiate the effects of antiplatelet drugs or anticoagulants — if combined therapy is planned perioperatively, exercise caution with neuraxial catheter maintenance." },
+      grade: "2C"
+    }
+  },
+];
+
+// Quick select drug names
+const QUICK_PILLS = [
+  "Aspirin/NSAIDs", "Clopidogrel", "LMWH", "Warfarin",
+  "Rivaroxaban", "Apixaban", "Dabigatran", "UFH",
+  "Ticagrelor", "Prasugrel", "Fondaparinux", "Thrombolytics"
+];
+
+const PILL_SEARCH_MAP = {
+  "Aspirin/NSAIDs": "aspirin",
+  "Clopidogrel": "clopidogrel",
+  "LMWH": "enoxaparin",
+  "Warfarin": "warfarin",
+  "Rivaroxaban": "rivaroxaban",
+  "Apixaban": "apixaban",
+  "Dabigatran": "dabigatran",
+  "UFH": "heparin",
+  "Ticagrelor": "ticagrelor",
+  "Prasugrel": "prasugrel",
+  "Fondaparinux": "fondaparinux",
+  "Thrombolytics": "alteplase"
+};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let selectedSubtypes = {};   // drugId -> subtypeId
+let activePill = null;
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  buildPills();
+  document.getElementById('searchInput').addEventListener('input', onSearch);
+
+  // ── Theme Toggle ──
+  const toggle = document.getElementById('themeToggle');
+  const meta = document.getElementById('themeColorMeta');
+  const saved = localStorage.getItem('asra-theme');
+  if (saved === 'light') {
+    document.body.classList.add('light');
+    meta.content = '#eef2f7';
+  }
+  toggle.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light');
+    meta.content = isLight ? '#eef2f7' : '#0a1628';
+    localStorage.setItem('asra-theme', isLight ? 'light' : 'dark');
+  });
+});
+
+function buildPills() {
+  const container = document.getElementById('pillsContainer');
+  QUICK_PILLS.forEach(label => {
+    const pill = document.createElement('button');
+    pill.className = 'pill';
+    pill.textContent = label;
+    pill.addEventListener('click', () => {
+      const searchTerm = PILL_SEARCH_MAP[label];
+      document.getElementById('searchInput').value = label;
+      // Toggle
+      if (activePill === label) {
+        activePill = null;
+        pill.classList.remove('active');
+        showEmpty();
+        return;
+      }
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activePill = label;
+      runSearch(searchTerm);
+    });
+    container.appendChild(pill);
+  });
+}
+
+function onSearch(e) {
+  const val = e.target.value.trim();
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  activePill = null;
+  if (!val) { showEmpty(); return; }
+  runSearch(val);
+}
+
+function runSearch(query) {
+  const q = query.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+  const words = q.split(/\s+/).filter(Boolean);
+  const matches = DRUGS.filter(drug =>
+    drug.names.some(name =>
+      words.some(w => name.includes(w) || w.includes(name.replace(/[^a-z0-9]/g,'')))
+    )
+  );
+  renderResults(matches);
+}
+
+function showEmpty() {
+  document.getElementById('results').innerHTML = `
+    <div class="empty-state">
+      <svg width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="display:block;margin:0 auto 16px">
+        <path d="M9 12h.01M12 12h.01M15 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+      </svg>
+      <p>Search for a medication above or tap<br>a quick-select pill to see ASRA<br>hold time recommendations.</p>
+    </div>`;
+}
+
+function renderResults(matches) {
+  const container = document.getElementById('results');
+  if (!matches.length) {
+    container.innerHTML = `<div class="no-match">
+      <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="display:block;margin:0 auto 12px;opacity:0.35"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6M11 8v6" stroke-width="1.5"/></svg>
+      <p>No medication found. Try a generic name,<br>brand name, or drug class.</p>
+      <p style="font-size:12px;margin-top:8px;opacity:0.6">Examples: apixaban, eliquis, heparin, plavix</p>
+    </div>`;
+    return;
+  }
+  container.innerHTML = '';
+  matches.forEach((drug, i) => {
+    const card = buildDrugCard(drug, i);
+    container.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// BUILD CARD
+// ═══════════════════════════════════════════════════════
+function buildDrugCard(drug, animIdx) {
+  const card = document.createElement('div');
+  card.className = 'drug-card';
+  card.style.animationDelay = `${animIdx * 60}ms`;
+
+  const hasSubtypes = drug.subtypes && drug.subtypes.length > 0;
+  const currentSubtype = selectedSubtypes[drug.id] || (hasSubtypes ? drug.subtypes[0].id : null);
+
+  const data = hasSubtypes ? drug.subtypeData[currentSubtype] : drug.data;
+  const subtypeLabel = hasSubtypes ? drug.subtypes.find(s => s.id === currentSubtype)?.label : null;
+
+  card.innerHTML = buildCardHTML(drug, data, hasSubtypes, currentSubtype, subtypeLabel);
+
+  if (hasSubtypes) {
+    card.querySelectorAll('.subtype-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const newSubtype = btn.dataset.subtype;
+        selectedSubtypes[drug.id] = newSubtype;
+        const newData = drug.subtypeData[newSubtype];
+        const newLabel = drug.subtypes.find(s => s.id === newSubtype)?.label;
+        // Update rec section
+        card.querySelector('.drug-subtype-tag').textContent = newLabel || '';
+        card.querySelector('.rec-grid').innerHTML = buildRecGridHTML(newData);
+        card.querySelector('.grade-badge').className = `grade-badge grade-${newData.grade}`;
+        card.querySelector('.grade-badge').textContent = `Grade ${newData.grade}`;
+        card.querySelectorAll('.subtype-btn').forEach(b => b.classList.toggle('active', b.dataset.subtype === newSubtype));
+      });
+    });
+  }
+
+  return card;
+}
+
+function buildCardHTML(drug, data, hasSubtypes, currentSubtype, subtypeLabel) {
+  const subtypeSelector = hasSubtypes ? `
+    <div class="subtype-selector visible">
+      <div class="subtype-selector-label">Select dose / renal function</div>
+      <div class="subtype-buttons">
+        ${drug.subtypes.map(s => `
+          <button class="subtype-btn${s.id === currentSubtype ? ' active' : ''}" data-subtype="${s.id}">${s.label}</button>
+        `).join('')}
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="drug-card-header">
+      <div>
+        <div class="drug-name">${drug.display}</div>
+        <div class="drug-class">${drug.drugClass}</div>
+      </div>
+      ${subtypeLabel ? `<div class="drug-subtype-tag">${subtypeLabel}</div>` : ''}
+    </div>
+    ${subtypeSelector}
+    <div class="rec-grid">
+      ${buildRecGridHTML(data)}
+    </div>
+    <div class="grade-row">
+      <span class="grade-label">Evidence Grade</span>
+      <span class="grade-badge grade-${data.grade}">Grade ${data.grade}</span>
+    </div>
+  `;
+}
+
+function buildRecGridHTML(data) {
+  const rows = [
+    { cls: 'stop', icon: '⏱️', label: 'Hold Before Block / Removal', key: 'stop' },
+    { cls: 'removal', icon: '🔄', label: 'Catheter Removal Timing', key: 'removal' },
+    { cls: 'restart', icon: '✅', label: 'Restart / Next Dose After Block', key: 'restart' },
+    { cls: 'lab', icon: '🧪', label: 'Lab Monitoring', key: 'lab' },
+    { cls: 'notes', icon: '📋', label: 'Clinical Notes', key: 'notes' },
+  ];
+
+  return rows.map(row => {
+    const field = data[row.key];
+    if (!field) return '';
+    const textCls = field.cls ? ` ${field.cls}` : '';
+    const text = (field.text || '').replace(/\n/g, '<br>');
+    return `
+      <div class="rec-row ${row.cls}">
+        <div class="rec-icon">${row.icon}</div>
+        <div class="rec-content">
+          <div class="rec-label">${row.label}</div>
+          <div class="rec-value${textCls}">${text}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
